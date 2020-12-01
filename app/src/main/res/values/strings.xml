@@ -3,4 +3,5 @@
     <string name="search">Search</string>
     <string name="keyword">keyword...</string>
     <string name="settings">settings</string>
+    <string name="fill_search_box">Please fill search box</string>
 </resources>
