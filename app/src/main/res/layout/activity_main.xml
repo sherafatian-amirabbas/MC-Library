@@ -7,6 +7,7 @@
     tools:context=".MainActivity">
 
     <androidx.appcompat.widget.Toolbar
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
         android:id="@+id/toolbarSearch"
         android:layout_width="0dp"
         android:layout_height="?attr/actionBarSize"
