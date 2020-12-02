@@ -19,14 +19,17 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        setSupportActionBar(toolbarSearch)
+        setSupportActionBar(toolbarMain)
         viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
+
+        rvMain.setHasFixedSize(true)
+        val bookAdapter = BookAdapter(ArrayList())
+        rvMain.adapter = bookAdapter
 
         viewModel.getAllBooks()
 
         viewModel.books.observe(this) {
-            for (book in it)
-                Log.d("MyLog", book.title)
+            bookAdapter.updateBooks(it)
         }
     }
 
