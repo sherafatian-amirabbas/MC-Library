@@ -1,29 +1,70 @@
 package com.example.library
 
-import android.content.Intent
 import android.os.Bundle
-import android.widget.Toast
+import android.os.Handler
+import android.util.Log
+import android.view.Menu
+import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.SearchView
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
+    private val handler = Handler()
+    private var runnable: Runnable? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        btnSearch.setOnClickListener {
-            val keyword = edtSearch.text.toString().trim()
-            if (keyword.isEmpty())
-                Toast.makeText(this, getString(R.string.fill_search_box), Toast.LENGTH_SHORT).show()
-            else {
-                startResultActivity(keyword)
-            }
-        }
+        setSupportActionBar(toolbarSearch)
     }
 
-    private fun startResultActivity(keyword: String) {
-        val intent = Intent(this, ResultActivity::class.java)
-        intent.putExtra(KEYWORD_KEY, keyword)
-        startActivity(intent)
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.menu_search, menu)
+
+        val searchItem = menu?.findItem(R.id.menu_search)
+        val searchView = searchItem?.actionView as SearchView
+        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                return false
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                if (runnable != null) {
+                    handler.removeCallbacks(runnable!!)
+                }
+
+                runnable = Runnable {
+
+                }
+                handler.postDelayed(runnable!!, 300)
+                return false
+            }
+        })
+
+
+        searchItem.setOnActionExpandListener(object : MenuItem.OnActionExpandListener {
+            override fun onMenuItemActionExpand(item: MenuItem?): Boolean {
+                return true
+            }
+
+            override fun onMenuItemActionCollapse(item: MenuItem?): Boolean {
+                Log.d("MyLog", "closed!")
+                return true
+            }
+        })
+
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.menu_search -> {
+
+                return true
+            }
+            else -> return super.onOptionsItemSelected(item)
+        }
     }
 }
