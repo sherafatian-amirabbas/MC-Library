@@ -1,7 +1,7 @@
 package com.example.library
 
 import android.os.Bundle
-import android.util.Log
+import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
@@ -25,18 +25,22 @@ class ResultActivity : AppCompatActivity() {
             }
         }
 
+        rvResult.setHasFixedSize(true)
+        val bookAdapter = BookAdapter()
+        rvResult.adapter = bookAdapter
+
         viewModel.books.observe(this) {
             when (it.status) {
                 Status.LOADING -> {
-                    Toast.makeText(this, "loading...", Toast.LENGTH_SHORT).show()
+                    progressResult.visibility = View.VISIBLE
                 }
                 Status.ERROR -> {
                     Toast.makeText(this, it.message, Toast.LENGTH_SHORT).show()
+                    progressResult.visibility = View.GONE
                 }
                 Status.SUCCESS -> {
-                    for (book in it.data!!) {
-                        Log.d("MyLog", book.title)
-                    }
+                    bookAdapter.submitList(it.data)
+                    progressResult.visibility = View.GONE
                 }
             }
         }
