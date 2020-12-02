@@ -28,7 +28,7 @@ class BookAdapter(val books: ArrayList<Book>, val onBookClickListener: OnBookCli
             itemView.txtTitleItemBook.text = book.title
             itemView.txtDescItemBook.text = book.description
             itemView.txtAuthorItemBook.text = book.author
-            itemView.txtISBNItemBook.text = book.ISBN
+            itemView.txtISBNItemBook.text = "ISBN :" + book.ISBN
 
             itemView.setOnClickListener {
                 onBookClickListener.onBookClick(book.id)

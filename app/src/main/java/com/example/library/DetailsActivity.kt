@@ -1,16 +1,21 @@
 package com.example.library
 
 import android.os.Bundle
-import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
+import kotlinx.android.synthetic.main.activity_details.*
 
 class DetailsActivity : AppCompatActivity() {
     private lateinit var viewModel: DetailsViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
+
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_details)
+        setSupportActionBar(toolbarDetails)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+//        supportActionBar?.setHomeButtonEnabled(true)
+
         viewModel = ViewModelProvider(this).get(DetailsViewModel::class.java)
 
         val intent = intent
@@ -20,7 +25,11 @@ class DetailsActivity : AppCompatActivity() {
         }
 
         viewModel.book.observe(this) {
-            Log.d("MyLog", it.title)
+            txtTitleBook.text = it.title
+            txtDescBook.text = it.description
+            txtAuthorBook.text = it.author
+            txtISBNBook.text = it.ISBN
+            txtAbstractBook.text = it.abstract
         }
     }
 }
