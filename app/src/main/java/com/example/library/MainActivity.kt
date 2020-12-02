@@ -1,5 +1,6 @@
 package com.example.library
 
+import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.view.Menu
@@ -9,7 +10,7 @@ import androidx.appcompat.widget.SearchView
 import androidx.lifecycle.ViewModelProvider
 import kotlinx.android.synthetic.main.activity_main.*
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), OnBookClickListener {
     private lateinit var viewModel: MainViewModel
     private val handler = Handler()
     private var runnable: Runnable? = null
@@ -22,7 +23,7 @@ class MainActivity : AppCompatActivity() {
         viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
 
         rvMain.setHasFixedSize(true)
-        val bookAdapter = BookAdapter(ArrayList())
+        val bookAdapter = BookAdapter(ArrayList(), this)
         rvMain.adapter = bookAdapter
 
         viewModel.getAllBooks()
@@ -71,5 +72,11 @@ class MainActivity : AppCompatActivity() {
         })
 
         return true
+    }
+
+    override fun onBookClick(bookId: String) {
+        val intent = Intent(this, DetailsActivity::class.java)
+        intent.putExtra(BOOK_ID_KEY, bookId)
+        startActivity(intent)
     }
 }

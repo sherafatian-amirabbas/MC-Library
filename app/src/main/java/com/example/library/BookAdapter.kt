@@ -7,7 +7,8 @@ import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.item_book.view.*
 
 
-class BookAdapter(val books: ArrayList<Book>) : RecyclerView.Adapter<BookAdapter.BookViewHolder>() {
+class BookAdapter(val books: ArrayList<Book>, val onBookClickListener: OnBookClickListener) :
+    RecyclerView.Adapter<BookAdapter.BookViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BookViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.item_book, parent, false)
@@ -22,12 +23,16 @@ class BookAdapter(val books: ArrayList<Book>) : RecyclerView.Adapter<BookAdapter
         return books.size
     }
 
-    class BookViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    inner class BookViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         fun bind(book: Book) {
             itemView.txtTitleItemBook.text = book.title
             itemView.txtDescItemBook.text = book.description
             itemView.txtAuthorItemBook.text = book.author
             itemView.txtISBNItemBook.text = book.ISBN
+
+            itemView.setOnClickListener {
+                onBookClickListener.onBookClick(book.id)
+            }
         }
     }
 
@@ -36,4 +41,8 @@ class BookAdapter(val books: ArrayList<Book>) : RecyclerView.Adapter<BookAdapter
         this.books.addAll(books)
         notifyDataSetChanged()
     }
+}
+
+interface OnBookClickListener {
+    fun onBookClick(bookId: String)
 }

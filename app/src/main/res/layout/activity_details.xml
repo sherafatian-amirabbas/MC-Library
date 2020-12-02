@@ -4,11 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FAFAFA"
-    tools:context=".ResultActivity">
+    tools:context=".DetailsActivity">
 
     <androidx.appcompat.widget.Toolbar
-        android:id="@+id/toolbarResult"
+        android:id="@+id/toolbarDetails"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:background="?attr/colorPrimary"
