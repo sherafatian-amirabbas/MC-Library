@@ -18,4 +18,11 @@ class MainViewModel : ViewModel() {
             books.postValue(result)
         }
     }
+
+    fun searchBooks(newText: String?) {
+        viewModelScope.launch(Dispatchers.IO) {
+            val result = apiService.search(newText)
+            books.postValue(result)
+        }
+    }
 }

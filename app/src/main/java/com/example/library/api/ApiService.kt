@@ -8,7 +8,7 @@ interface ApiService {
 
     @GET("Book/GetAllByKeyword/{keyword}")
     suspend fun search(
-        @Path("keyword") keyword: String
+        @Path("keyword") keyword: String?
     ): List<Book>
 
     @GET("Book/GetAll")

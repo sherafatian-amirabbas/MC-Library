@@ -2,7 +2,6 @@ package com.example.library
 
 import android.os.Bundle
 import android.os.Handler
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
@@ -49,9 +48,12 @@ class MainActivity : AppCompatActivity() {
                 }
 
                 runnable = Runnable {
-
+                    if (newText?.isNotEmpty() == true)
+                        viewModel.searchBooks(newText)
+                    else
+                        viewModel.getAllBooks()
                 }
-                handler.postDelayed(runnable!!, 300)
+                handler.postDelayed(runnable!!, 500)
                 return false
             }
         })
@@ -63,21 +65,11 @@ class MainActivity : AppCompatActivity() {
             }
 
             override fun onMenuItemActionCollapse(item: MenuItem?): Boolean {
-                Log.d("MyLog", "closed!")
+                viewModel.getAllBooks()
                 return true
             }
         })
 
         return true
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when (item.itemId) {
-            R.id.menu_search -> {
-
-                return true
-            }
-            else -> return super.onOptionsItemSelected(item)
-        }
     }
 }
