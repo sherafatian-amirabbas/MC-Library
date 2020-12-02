@@ -7,9 +7,11 @@ import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
+import androidx.lifecycle.ViewModelProvider
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
+    private lateinit var viewModel: MainViewModel
     private val handler = Handler()
     private var runnable: Runnable? = null
 
@@ -18,6 +20,14 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         setSupportActionBar(toolbarSearch)
+        viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
+
+        viewModel.getAllBooks()
+
+        viewModel.books.observe(this) {
+            for (book in it)
+                Log.d("MyLog", book.title)
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {

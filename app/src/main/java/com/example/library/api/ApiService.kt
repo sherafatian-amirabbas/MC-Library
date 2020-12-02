@@ -10,4 +10,7 @@ interface ApiService {
     suspend fun search(
         @Path("keyword") keyword: String
     ): List<Book>
+
+    @GET("Book/GetAll")
+    suspend fun getAllBooks(): List<Book>
 }
