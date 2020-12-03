@@ -1,13 +1,15 @@
-package com.example.library
+package com.example.library.ui
 
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.example.library.R
+import com.example.library.service.entities.Book
 import kotlinx.android.synthetic.main.item_book.view.*
 
 
-class BookAdapter(val books: ArrayList<Book>, val onBookClickListener: OnBookClickListener) :
+class BookAdapter(var books: ArrayList<Book>, val onClick: (bookId: String) -> Unit) :
     RecyclerView.Adapter<BookAdapter.BookViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BookViewHolder {
@@ -25,13 +27,15 @@ class BookAdapter(val books: ArrayList<Book>, val onBookClickListener: OnBookCli
 
     inner class BookViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         fun bind(book: Book) {
-            itemView.txtTitleItemBook.text = book.title
-            itemView.txtDescItemBook.text = book.description
-            itemView.txtAuthorItemBook.text = book.author
-            itemView.txtISBNItemBook.text = "ISBN :" + book.ISBN
+            itemView.txtTitleItemBook.text = book.Title
+            itemView.txtDescItemBook.text = book.Description
+            itemView.txtAuthorItemBook.text = book.Author
+            itemView.txtISBNItemBook.text = "ISBN : " + book.ISBN
 
             itemView.setOnClickListener {
-                onBookClickListener.onBookClick(book.id)
+
+                if(onClick != null)
+                    onClick(book.Id)
             }
         }
     }
@@ -41,8 +45,4 @@ class BookAdapter(val books: ArrayList<Book>, val onBookClickListener: OnBookCli
         this.books.addAll(books)
         notifyDataSetChanged()
     }
-}
-
-interface OnBookClickListener {
-    fun onBookClick(bookId: String)
 }

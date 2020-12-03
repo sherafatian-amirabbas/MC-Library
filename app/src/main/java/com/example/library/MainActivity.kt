@@ -8,29 +8,33 @@ import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
 import androidx.lifecycle.ViewModelProvider
+import com.example.library.common.Common
+import com.example.library.service.LibraryProxy
+import com.example.library.ui.BookAdapter
+import com.example.library.ui.viewModel.DetailsViewModelFactory
+import com.example.library.ui.viewModel.MainViewModel
+import com.example.library.ui.viewModel.MainViewModelFactory
 import kotlinx.android.synthetic.main.activity_main.*
 
-class MainActivity : AppCompatActivity(), OnBookClickListener {
+class MainActivity : BaseActivity() {
+
+    private lateinit var bookAdapter: BookAdapter
     private lateinit var viewModel: MainViewModel
-    private val handler = Handler()
-    private var runnable: Runnable? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        setSupportActionBar(toolbarMain)
-        viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
 
-        rvMain.setHasFixedSize(true)
-        val bookAdapter = BookAdapter(ArrayList(), this)
-        rvMain.adapter = bookAdapter
+        var service = LibraryProxy(applicationContext)
+        service.getServerDate {
 
-        viewModel.getAllBooks()
+            var a = it ;
 
-        viewModel.books.observe(this) {
-            bookAdapter.updateBooks(it)
         }
+
+
+        initialize()
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -39,44 +43,64 @@ class MainActivity : AppCompatActivity(), OnBookClickListener {
         val searchItem = menu?.findItem(R.id.menu_search)
         val searchView = searchItem?.actionView as SearchView
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+
             override fun onQueryTextSubmit(query: String?): Boolean {
                 return false
             }
 
             override fun onQueryTextChange(newText: String?): Boolean {
-                if (runnable != null) {
-                    handler.removeCallbacks(runnable!!)
-                }
 
-                runnable = Runnable {
-                    if (newText?.isNotEmpty() == true)
-                        viewModel.searchBooks(newText)
-                    else
-                        viewModel.getAllBooks()
-                }
-                handler.postDelayed(runnable!!, 500)
-                return false
-            }
-        })
-
-
-        searchItem.setOnActionExpandListener(object : MenuItem.OnActionExpandListener {
-            override fun onMenuItemActionExpand(item: MenuItem?): Boolean {
-                return true
-            }
-
-            override fun onMenuItemActionCollapse(item: MenuItem?): Boolean {
-                viewModel.getAllBooks()
+                viewModel.updateModel(if(newText.isNullOrEmpty()) "" else newText!!, {})
                 return true
             }
         })
+
+
+        val refreshMenuItem = menu?.findItem(R.id.menu_refresh)
+        refreshMenuItem.setOnMenuItemClickListener {
+
+            viewModel.updateModel("", {})
+            true
+        }
+
 
         return true
     }
 
-    override fun onBookClick(bookId: String) {
-        val intent = Intent(this, DetailsActivity::class.java)
-        intent.putExtra(BOOK_ID_KEY, bookId)
-        startActivity(intent)
+    // ---------------------- private members
+    fun initialize()
+    {
+        setSupportActionBar(toolbarMain)
+
+        initializeAdapter()
+        initializeRecycler()
+        initializeViewModel()
+    }
+
+    fun initializeAdapter()
+    {
+        bookAdapter = BookAdapter(ArrayList(), {
+
+            val intent = Intent(this, DetailsActivity::class.java)
+            intent.putExtra(Common.BOOK_ID_KEY, it)
+            startActivity(intent)
+        })
+    }
+
+    fun initializeRecycler()
+    {
+        rvMain.setHasFixedSize(true)
+        rvMain.adapter = bookAdapter
+    }
+
+    fun initializeViewModel()
+    {
+        viewModel = ViewModelProvider(this, MainViewModelFactory(this.application))
+            .get(MainViewModel::class.java)
+        viewModel.books.observe(this) {
+            bookAdapter.updateBooks(it)
+        }
+
+        viewModel.updateModel("", {})
     }
 }
