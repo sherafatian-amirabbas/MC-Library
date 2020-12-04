@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.example.library.dataAccess.Repository
+import com.example.library.dataAccess.entities.Favorite
 import com.example.library.service.LibraryProxy
 import com.example.library.service.entities.Book
 import kotlinx.coroutines.Dispatchers
@@ -39,5 +40,34 @@ class DetailsViewModel(contex: Context) : ViewModel() {
             val resultCount = repository.isFavorite(bookId)
             isFavorite.postValue(resultCount > 0)
         }
+    }
+
+    fun toggleFavorites() {
+        viewModelScope.launch(Dispatchers.IO) {
+            val favorite = mapBookToFavorite()
+            if (isFavorite.value == true) {
+                repository.removeFromFavorite(favorite)
+                isFavorite.postValue(false)
+            } else {
+                repository.addToFavorite(favorite)
+                isFavorite.postValue(true)
+            }
+        }
+    }
+
+    fun mapBookToFavorite(): Favorite? {
+        val book = book.value
+        if (book != null) {
+            return Favorite(
+                Id = book.Id,
+                Title = book.Title,
+                Description = book.Description,
+                Abstract = book.Abstract,
+                ISBN = book.ISBN,
+                Author = book.Author,
+                Publisher = book.Publisher
+            )
+        }
+        return null
     }
 }

@@ -17,10 +17,10 @@ interface IDataAccessObject {
     fun updateUserSetting(vararg userSettings: UserSetting)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun addToFavorite(favorite: Favorite)
+    suspend fun addToFavorite(favorite: Favorite?)
 
     @Delete
-    fun removeFromFavorite(favorite: Favorite)
+    suspend fun removeFromFavorite(favorite: Favorite?)
 
     @Query("SELECT * FROM favorites")
     fun getFavorites(): List<Favorite>

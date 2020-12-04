@@ -32,6 +32,10 @@ class DetailsActivity : BaseActivity() {
                 btnAddRemoveFavorite.text = getString(R.string.add_to_favorites)
             }
         }
+
+        btnAddRemoveFavorite.setOnClickListener {
+            viewModel.toggleFavorites()
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {

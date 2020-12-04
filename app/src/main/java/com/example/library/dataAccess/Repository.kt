@@ -2,6 +2,7 @@ package com.example.library.dataAccess
 
 import android.content.Context
 import com.example.library.common.Common
+import com.example.library.dataAccess.entities.Favorite
 import com.example.library.dataAccess.entities.UserSetting
 import com.example.library.service.LibraryProxy
 
@@ -76,5 +77,13 @@ class Repository(var context: Context) {
 
     suspend fun isFavorite(bookId: String?): Int {
         return _repo.isFavorite(bookId)
+    }
+
+    suspend fun removeFromFavorite(favorite: Favorite?) {
+        _repo.removeFromFavorite(favorite)
+    }
+
+    suspend fun addToFavorite(favorite: Favorite?) {
+        _repo.addToFavorite(favorite)
     }
 }
