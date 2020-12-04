@@ -4,9 +4,10 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import com.example.library.dataAccess.entities.Favorite
 import com.example.library.dataAccess.entities.UserSetting
 
-@Database(entities = [UserSetting::class], version = 1)
+@Database(entities = [UserSetting::class, Favorite::class], version = 1)
 abstract class DataModel : RoomDatabase() {
 
     companion object {
