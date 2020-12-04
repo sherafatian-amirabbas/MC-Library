@@ -2,10 +2,8 @@ package com.example.library.dataAccess
 
 import android.content.Context
 import com.example.library.common.Common
-import com.example.library.service.LibraryProxy
 import com.example.library.dataAccess.entities.UserSetting
-import java.text.SimpleDateFormat
-import java.util.*
+import com.example.library.service.LibraryProxy
 
 class Repository(var context: Context) {
 
@@ -70,9 +68,13 @@ class Repository(var context: Context) {
     private fun upsertUserSetting(userSetting: UserSetting) {
 
         var original_setting = getUserSetting()
-        if(original_setting == null)
+        if (original_setting == null)
             _repo.insertUserSetting(userSetting)
         else
             _repo.updateUserSetting(userSetting)
+    }
+
+    suspend fun isFavorite(bookId: String?): Int {
+        return _repo.isFavorite(bookId)
     }
 }

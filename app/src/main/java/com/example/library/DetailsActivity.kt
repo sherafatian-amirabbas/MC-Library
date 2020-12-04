@@ -2,6 +2,7 @@ package com.example.library
 
 import android.os.Bundle
 import android.view.Menu
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
 import com.example.library.common.Common
 import com.example.library.ui.viewModel.DetailsViewModel
@@ -11,6 +12,7 @@ import kotlinx.android.synthetic.main.activity_details.*
 class DetailsActivity : BaseActivity() {
 
     private lateinit var viewModel: DetailsViewModel
+    private var bookId: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
@@ -18,6 +20,18 @@ class DetailsActivity : BaseActivity() {
         setContentView(R.layout.activity_details)
 
         initialize()
+
+        viewModel.isFavorite(bookId)
+
+        viewModel.isFavorite.observe(this) {
+            if (it) {
+                btnAddRemoveFavorite.setBackgroundColor(ContextCompat.getColor(this, android.R.color.holo_red_light))
+                btnAddRemoveFavorite.text = getString(R.string.remove_from_favorites)
+            } else {
+                btnAddRemoveFavorite.setBackgroundColor(ContextCompat.getColor(this, R.color.colorPrimary))
+                btnAddRemoveFavorite.text = getString(R.string.add_to_favorites)
+            }
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -32,8 +46,7 @@ class DetailsActivity : BaseActivity() {
 
     // -------------------- initialize
 
-    fun initialize()
-    {
+    fun initialize() {
         setSupportActionBar(toolbarDetails)
 
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
@@ -43,8 +56,7 @@ class DetailsActivity : BaseActivity() {
         updateView()
     }
 
-    fun initializeViewModel()
-    {
+    fun initializeViewModel() {
         viewModel = ViewModelProvider(this, DetailsViewModelFactory(this.application))
             .get(DetailsViewModel::class.java)
 
@@ -57,12 +69,11 @@ class DetailsActivity : BaseActivity() {
         }
     }
 
-    fun updateView()
-    {
+    fun updateView() {
         val intent = intent
         if (intent != null) {
 
-            val bookId = intent.getStringExtra(Common.BOOK_ID_KEY)
+            bookId = intent.getStringExtra(Common.BOOK_ID_KEY)
             viewModel.updateModel(bookId!!)
         }
     }

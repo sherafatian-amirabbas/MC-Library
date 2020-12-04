@@ -26,5 +26,5 @@ interface IDataAccessObject {
     fun getFavorites(): List<Favorite>
 
     @Query("SELECT COUNT(*) FROM favorites WHERE id=:favoriteId")
-    fun isFavorite(favoriteId: String): Int
+    suspend fun isFavorite(favoriteId: String?): Int
 }
