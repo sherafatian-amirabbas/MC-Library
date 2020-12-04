@@ -1,11 +1,7 @@
 package com.example.library
 
-import android.opengl.Visibility
 import android.os.Bundle
 import android.view.Menu
-import android.view.View
-import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.SearchView
 import androidx.lifecycle.ViewModelProvider
 import com.example.library.common.Common
 import com.example.library.ui.viewModel.DetailsViewModel
@@ -25,13 +21,11 @@ class DetailsActivity : BaseActivity() {
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-
         menuInflater.inflate(R.menu.menu_search, menu)
-
         val searchItem = menu?.findItem(R.id.menu_search)
-        val searchView = searchItem?.actionView as SearchView
-        searchView.visibility = View.GONE
-
+        searchItem?.isVisible = false
+        val refreshItem = menu?.findItem(R.id.menu_refresh)
+        refreshItem?.isVisible = false
         return true
     }
 
