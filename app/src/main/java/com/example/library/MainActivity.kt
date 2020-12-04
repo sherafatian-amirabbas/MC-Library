@@ -2,16 +2,12 @@ package com.example.library
 
 import android.content.Intent
 import android.os.Bundle
-import android.os.Handler
 import android.view.Menu
-import android.view.MenuItem
-import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
 import androidx.lifecycle.ViewModelProvider
 import com.example.library.common.Common
 import com.example.library.service.LibraryProxy
 import com.example.library.ui.BookAdapter
-import com.example.library.ui.viewModel.DetailsViewModelFactory
 import com.example.library.ui.viewModel.MainViewModel
 import com.example.library.ui.viewModel.MainViewModelFactory
 import kotlinx.android.synthetic.main.activity_main.*
@@ -50,16 +46,18 @@ class MainActivity : BaseActivity() {
 
             override fun onQueryTextChange(newText: String?): Boolean {
 
-                viewModel.updateModel(if(newText.isNullOrEmpty()) "" else newText!!, {})
+                viewModel.updateModel(if (newText.isNullOrEmpty()) "" else newText, {})
                 return true
             }
         })
 
 
-        val refreshMenuItem = menu?.findItem(R.id.menu_refresh)
+        val refreshMenuItem = menu.findItem(R.id.menu_refresh)
         refreshMenuItem.setOnMenuItemClickListener {
 
-            viewModel.updateModel("", {})
+            viewModel.updateModel("", {
+                searchItem.collapseActionView()
+            })
             true
         }
 
