@@ -1,6 +1,7 @@
 package com.example.library.dataAccess
 
 import android.content.Context
+import androidx.lifecycle.LiveData
 import com.example.library.common.Common
 import com.example.library.dataAccess.entities.Favorite
 import com.example.library.dataAccess.entities.UserSetting
@@ -14,19 +15,18 @@ class Repository(var context: Context) {
     fun getUserSetting(): UserSetting? {
 
         var settings = _repo.getUserSetting()
-        if(settings.size != 0)
+        if (settings.size != 0)
             return settings[0]
         else
             return null
     }
 
-    fun updateLastVisitDate(onComplete: (UserSetting) -> Unit)
-    {
+    fun updateLastVisitDate(onComplete: (UserSetting) -> Unit) {
         var userSetting = getUserSetting()
 
         var setting =
-            if(userSetting == null)
-                UserSetting(1,"", 15, true)
+            if (userSetting == null)
+                UserSetting(1, "", 15, true)
             else
                 userSetting!!
 
@@ -35,16 +35,15 @@ class Repository(var context: Context) {
             setting.lastVisitDate = Common.convertDateToLastVisitDateStringFormat(it)
             upsertUserSetting(setting)
 
-            if(onComplete != null)
+            if (onComplete != null)
                 onComplete(setting)
         }
     }
 
-    fun updateServiceSetting(serviceIntervalInMinutes: Int, isServiceEnabled: Boolean)
-    {
+    fun updateServiceSetting(serviceIntervalInMinutes: Int, isServiceEnabled: Boolean) {
         var userSetting = getUserSetting()
 
-        if(userSetting == null) {
+        if (userSetting == null) {
 
             updateLastVisitDate({
 
@@ -53,9 +52,7 @@ class Repository(var context: Context) {
 
                 upsertUserSetting(it)
             })
-        }
-        else
-        {
+        } else {
             userSetting.serviceIntervalInMinutes = serviceIntervalInMinutes
             userSetting.isServiceEnabled = isServiceEnabled
 
@@ -85,5 +82,9 @@ class Repository(var context: Context) {
 
     suspend fun addToFavorite(favorite: Favorite?) {
         _repo.addToFavorite(favorite)
+    }
+
+    fun getFavorites(): LiveData<List<Favorite>> {
+        return _repo.getFavorites()
     }
 }

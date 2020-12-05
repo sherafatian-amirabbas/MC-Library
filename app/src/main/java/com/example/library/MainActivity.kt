@@ -25,7 +25,7 @@ class MainActivity : BaseActivity() {
         var service = LibraryProxy(applicationContext)
         service.getServerDate {
 
-            var a = it ;
+            var a = it;
 
         }
 
@@ -54,10 +54,15 @@ class MainActivity : BaseActivity() {
 
         val refreshMenuItem = menu.findItem(R.id.menu_refresh)
         refreshMenuItem.setOnMenuItemClickListener {
-
             viewModel.updateModel("", {
                 searchItem.collapseActionView()
             })
+            true
+        }
+
+        val favoritesMenuItem = menu.findItem(R.id.menu_favorite)
+        favoritesMenuItem.setOnMenuItemClickListener {
+            startActivity(Intent(this, FavoriteActivity::class.java))
             true
         }
 
@@ -66,8 +71,7 @@ class MainActivity : BaseActivity() {
     }
 
     // ---------------------- private members
-    fun initialize()
-    {
+    fun initialize() {
         setSupportActionBar(toolbarMain)
 
         initializeAdapter()
@@ -75,8 +79,7 @@ class MainActivity : BaseActivity() {
         initializeViewModel()
     }
 
-    fun initializeAdapter()
-    {
+    fun initializeAdapter() {
         bookAdapter = BookAdapter(ArrayList(), {
 
             val intent = Intent(this, DetailsActivity::class.java)
@@ -85,14 +88,12 @@ class MainActivity : BaseActivity() {
         })
     }
 
-    fun initializeRecycler()
-    {
+    fun initializeRecycler() {
         rvMain.setHasFixedSize(true)
         rvMain.adapter = bookAdapter
     }
 
-    fun initializeViewModel()
-    {
+    fun initializeViewModel() {
         viewModel = ViewModelProvider(this, MainViewModelFactory(this.application))
             .get(MainViewModel::class.java)
         viewModel.books.observe(this) {

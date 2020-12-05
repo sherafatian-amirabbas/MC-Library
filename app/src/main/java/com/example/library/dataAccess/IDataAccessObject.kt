@@ -1,5 +1,6 @@
 package com.example.library.dataAccess
 
+import androidx.lifecycle.LiveData
 import androidx.room.*
 import com.example.library.dataAccess.entities.Favorite
 import com.example.library.dataAccess.entities.UserSetting
@@ -23,7 +24,7 @@ interface IDataAccessObject {
     suspend fun removeFromFavorite(favorite: Favorite?)
 
     @Query("SELECT * FROM favorites")
-    fun getFavorites(): List<Favorite>
+    fun getFavorites(): LiveData<List<Favorite>>
 
     @Query("SELECT COUNT(*) FROM favorites WHERE id=:favoriteId")
     suspend fun isFavorite(favoriteId: String?): Int
