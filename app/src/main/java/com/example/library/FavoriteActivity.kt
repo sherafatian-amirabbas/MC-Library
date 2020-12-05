@@ -1,8 +1,10 @@
 package com.example.library
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
+import com.example.library.common.Common
 import com.example.library.ui.FavoriteAdapter
 import com.example.library.ui.viewModel.FavoriteViewModel
 import com.example.library.ui.viewModel.FavoriteViewModelFactory
@@ -28,6 +30,8 @@ class FavoriteActivity : AppCompatActivity(), (String) -> Unit {
     }
 
     override fun invoke(favoriteId: String) {
-
+        val intent = Intent(this, DetailsActivity::class.java)
+        intent.putExtra(Common.BOOK_ID_KEY, favoriteId)
+        startActivity(intent)
     }
 }

@@ -1,5 +1,6 @@
 package com.example.library
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import androidx.core.content.ContextCompat
@@ -44,6 +45,11 @@ class DetailsActivity : BaseActivity() {
         searchItem?.isVisible = false
         val refreshItem = menu?.findItem(R.id.menu_refresh)
         refreshItem?.isVisible = false
+        val favoriteItem = menu?.findItem(R.id.menu_favorite)
+        favoriteItem?.setOnMenuItemClickListener {
+            startFavoritesActivity()
+            true
+        }
         return true
     }
 
@@ -54,7 +60,7 @@ class DetailsActivity : BaseActivity() {
         setSupportActionBar(toolbarDetails)
 
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
-//        supportActionBar?.setHomeButtonEnabled(true)
+        toolbarDetails.setNavigationOnClickListener { finish() }
 
         initializeViewModel()
         updateView()
@@ -80,5 +86,10 @@ class DetailsActivity : BaseActivity() {
             bookId = intent.getStringExtra(Common.BOOK_ID_KEY)
             viewModel.updateModel(bookId!!)
         }
+    }
+
+    private fun startFavoritesActivity() {
+        val intent = Intent(this, FavoriteActivity::class.java)
+        startActivity(intent)
     }
 }

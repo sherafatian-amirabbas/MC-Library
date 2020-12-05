@@ -13,9 +13,7 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
         <activity android:name=".FavoriteActivity"></activity>
-        <activity
-            android:name=".DetailsActivity"
-            android:parentActivityName=".MainActivity" />
+        <activity android:name=".DetailsActivity" />
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

@@ -62,12 +62,17 @@ class MainActivity : BaseActivity() {
 
         val favoritesMenuItem = menu.findItem(R.id.menu_favorite)
         favoritesMenuItem.setOnMenuItemClickListener {
-            startActivity(Intent(this, FavoriteActivity::class.java))
+            startFavoritesActivity()
             true
         }
 
 
         return true
+    }
+
+    private fun startFavoritesActivity() {
+        val intent = Intent(this, FavoriteActivity::class.java)
+        startActivity(intent)
     }
 
     // ---------------------- private members
