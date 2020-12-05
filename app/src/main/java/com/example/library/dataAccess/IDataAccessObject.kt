@@ -26,6 +26,9 @@ interface IDataAccessObject {
     @Query("SELECT * FROM favorites")
     fun getFavorites(): LiveData<List<Favorite>>
 
+    @Query("SELECT * FROM favorites WHERE title LIKE :keyword OR description LIKE :keyword OR author LIKE :keyword OR ISBN LIKE :keyword")
+    fun getFavoritesBy(keyword: String): LiveData<List<Favorite>>
+
     @Query("SELECT COUNT(*) FROM favorites WHERE id=:favoriteId")
     suspend fun isFavorite(favoriteId: String?): Int
 }

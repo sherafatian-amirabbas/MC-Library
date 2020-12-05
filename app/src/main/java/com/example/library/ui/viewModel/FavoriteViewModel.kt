@@ -18,7 +18,10 @@ class FavoriteViewModelFactory(private val context: Context) :
 class FavoriteViewModel(context: Context) : ViewModel() {
     private var repository = Repository(context)
 
-    fun getFavorites(): LiveData<List<Favorite>> {
-        return repository.getFavorites()
+    fun getFavorites(keyword: String? = null): LiveData<List<Favorite>> {
+        if (keyword.isNullOrEmpty())
+            return repository.getFavorites()
+        else
+            return repository.getFavoritesBy("%$keyword%")
     }
 }

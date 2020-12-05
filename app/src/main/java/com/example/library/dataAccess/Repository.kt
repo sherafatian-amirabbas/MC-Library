@@ -87,4 +87,8 @@ class Repository(var context: Context) {
     fun getFavorites(): LiveData<List<Favorite>> {
         return _repo.getFavorites()
     }
+
+    fun getFavoritesBy(keyword: String): LiveData<List<Favorite>> {
+        return _repo.getFavoritesBy(keyword)
+    }
 }

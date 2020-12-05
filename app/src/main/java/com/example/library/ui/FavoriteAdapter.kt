@@ -8,7 +8,7 @@ import com.example.library.R
 import com.example.library.dataAccess.entities.Favorite
 import kotlinx.android.synthetic.main.item_favorite.view.*
 
-class FavoriteAdapter(var favorites: List<Favorite>, val onClick: (favoriteId: String) -> Unit) :
+class FavoriteAdapter(var favorites: ArrayList<Favorite>, val onClick: (favoriteId: String) -> Unit) :
     RecyclerView.Adapter<FavoriteAdapter.FavoriteViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FavoriteViewHolder {
@@ -35,5 +35,11 @@ class FavoriteAdapter(var favorites: List<Favorite>, val onClick: (favoriteId: S
                 onClick(favorite.Id)
             }
         }
+    }
+
+    fun updateList(newList: List<Favorite>) {
+        favorites.clear()
+        favorites.addAll(newList)
+        notifyDataSetChanged()
     }
 }
