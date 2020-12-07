@@ -1,20 +1,17 @@
-package com.example.library.dataAccess
+package com.example.library.dataAccess.repository;
 
 import android.content.Context
-import androidx.lifecycle.LiveData
 import com.example.library.common.Common
-import com.example.library.dataAccess.entities.Favorite
+import com.example.library.dataAccess.IDataAccessObject
 import com.example.library.dataAccess.entities.UserSetting
-import com.example.library.service.LibraryProxy
 
-class Repository(var context: Context) {
 
-    private var _proxy = LibraryProxy(context)
-    private var _repo = DataModel.getInstance(context).getDataAccessObject()
+class RepositoryUser(context: Context, repo: IDataAccessObject):
+    RepositoryBase(context, repo)  {
 
     fun getUserSetting(): UserSetting? {
 
-        var settings = _repo.getUserSetting()
+        var settings = repo.getUserSetting()
         if (settings.size != 0)
             return settings[0]
         else
@@ -30,7 +27,7 @@ class Repository(var context: Context) {
             else
                 userSetting!!
 
-        _proxy.getServerDate {
+        _libraryProxy.getServerDate {
 
             setting.lastVisitDate = Common.convertDateToLastVisitDateStringFormat(it)
             upsertUserSetting(setting)
@@ -61,34 +58,14 @@ class Repository(var context: Context) {
     }
 
 
-    // ----------------------------- private members
+// ----------------------------- private members
 
     private fun upsertUserSetting(userSetting: UserSetting) {
 
         var original_setting = getUserSetting()
         if (original_setting == null)
-            _repo.insertUserSetting(userSetting)
+            repo.insertUserSetting(userSetting)
         else
-            _repo.updateUserSetting(userSetting)
-    }
-
-    suspend fun isFavorite(bookId: String?): Int {
-        return _repo.isFavorite(bookId)
-    }
-
-    suspend fun removeFromFavorite(favorite: Favorite?) {
-        _repo.removeFromFavorite(favorite)
-    }
-
-    suspend fun addToFavorite(favorite: Favorite?) {
-        _repo.addToFavorite(favorite)
-    }
-
-    fun getFavorites(): LiveData<List<Favorite>> {
-        return _repo.getFavorites()
-    }
-
-    fun getFavoritesBy(keyword: String): LiveData<List<Favorite>> {
-        return _repo.getFavoritesBy(keyword)
+            repo.updateUserSetting(userSetting)
     }
 }

@@ -3,6 +3,7 @@ package com.example.library.ui
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import com.example.library.R
 import com.example.library.service.entities.Book
@@ -27,10 +28,13 @@ class BookAdapter(var books: ArrayList<Book>, val onClick: (bookId: String) -> U
 
     inner class BookViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         fun bind(book: Book) {
+
             itemView.txtTitleItemBook.text = book.Title
             itemView.txtDescItemBook.text = book.Description
             itemView.txtAuthorItemBook.text = book.Author
             itemView.txtISBNItemBook.text = "ISBN : " + book.ISBN
+
+            itemView.imageView_favorite.visibility = if(book.isAddedAsFavorites) View.VISIBLE else View.INVISIBLE
 
             itemView.setOnClickListener {
 

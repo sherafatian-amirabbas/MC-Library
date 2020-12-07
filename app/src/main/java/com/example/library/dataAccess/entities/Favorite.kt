@@ -2,24 +2,51 @@ package com.example.library.dataAccess.entities
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
+import androidx.room.Ignore
 import androidx.room.PrimaryKey
+import com.example.library.service.entities.Book
 
 @Entity(tableName = "favorites")
 data class Favorite(
     @ColumnInfo(name = "id")
     @PrimaryKey
-    val Id: String,
+    var Id: String,
 
     @ColumnInfo(name = "title")
-    val Title: String,
+    var Title: String,
+
     @ColumnInfo(name = "description")
-    val Description: String,
+    var Description: String,
+
     @ColumnInfo(name = "abstract")
-    val Abstract: String,
+    var Abstract: String,
+
     @ColumnInfo(name = "ISBN")
-    val ISBN: String,
+    var ISBN: String,
+
     @ColumnInfo(name = "author")
-    val Author: String,
+    var Author: String,
+
     @ColumnInfo(name = "publisher")
-    val Publisher: String
+    var Publisher: String
 )
+{
+    @Ignore
+    var isExpired: Boolean = false
+
+
+    @Ignore
+    fun fillFromBook(book: Book?)
+    {
+        book?.let {
+
+            this.Id = it.Id
+            this.Title = it.Title
+            this.Description = it.Description
+            this.Abstract = it.Abstract
+            this.ISBN = it.ISBN
+            this.Author = it.Author
+            this.Publisher = it.Publisher
+        }
+    }
+}

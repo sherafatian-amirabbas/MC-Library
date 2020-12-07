@@ -87,6 +87,18 @@
         tools:text="ISBN" />
 
     <TextView
+        android:id="@+id/textView_notAvailable"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:text="@string/NotAvailable"
+        android:textColor="@android:color/holo_red_light"
+        android:textStyle="bold|italic"
+        app:layout_constraintBottom_toTopOf="@+id/txtAbstractBook"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txtAuthorBook" />
+
+    <TextView
         android:id="@+id/txtAbstractBook"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -102,7 +114,7 @@
     <Button
         android:id="@+id/btnAddRemoveFavorite"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="40dp"
         android:layout_marginStart="32dp"
         android:layout_marginEnd="32dp"
         android:layout_marginBottom="8dp"

@@ -1,6 +1,5 @@
 package com.example.library.dataAccess
 
-import androidx.lifecycle.LiveData
 import androidx.room.*
 import com.example.library.dataAccess.entities.Favorite
 import com.example.library.dataAccess.entities.UserSetting
@@ -17,18 +16,21 @@ interface IDataAccessObject {
     @Update(onConflict = OnConflictStrategy.REPLACE)
     fun updateUserSetting(vararg userSettings: UserSetting)
 
+
+    // ------------------------------------------------- Favorites
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun addToFavorite(favorite: Favorite?)
+    fun addToFavorite(favorite: Favorite)
 
     @Delete
-    suspend fun removeFromFavorite(favorite: Favorite?)
+    fun removeFromFavorite(favorite: Favorite)
 
     @Query("SELECT * FROM favorites")
-    fun getFavorites(): LiveData<List<Favorite>>
+    fun getFavorites(): List<Favorite>
 
     @Query("SELECT * FROM favorites WHERE title LIKE :keyword OR description LIKE :keyword OR author LIKE :keyword OR ISBN LIKE :keyword")
-    fun getFavoritesBy(keyword: String): LiveData<List<Favorite>>
+    fun getFavoritesBy(keyword: String): List<Favorite>
 
-    @Query("SELECT COUNT(*) FROM favorites WHERE id=:favoriteId")
-    suspend fun isFavorite(favoriteId: String?): Int
+    @Query("SELECT * FROM favorites WHERE id=:favoriteId")
+    fun getFavorite(favoriteId: String): Favorite?
 }

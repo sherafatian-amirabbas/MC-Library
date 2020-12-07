@@ -6,7 +6,9 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.library.R
 import com.example.library.dataAccess.entities.Favorite
+import kotlinx.android.synthetic.main.item_book.view.*
 import kotlinx.android.synthetic.main.item_favorite.view.*
+
 
 class FavoriteAdapter(var favorites: ArrayList<Favorite>, val onClick: (favoriteId: String) -> Unit) :
     RecyclerView.Adapter<FavoriteAdapter.FavoriteViewHolder>() {
@@ -26,10 +28,13 @@ class FavoriteAdapter(var favorites: ArrayList<Favorite>, val onClick: (favorite
 
     inner class FavoriteViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         fun bind(favorite: Favorite) {
+
             itemView.txtTitleItemFavorite.text = favorite.Title
             itemView.txtDescItemFavorite.text = favorite.Description
             itemView.txtAuthorItemFavorite.text = favorite.Author
             itemView.txtISBNItemFavorite.text = "ISBN : " + favorite.ISBN
+
+            itemView.textView_notAvailable.visibility = if(favorite.isExpired) View.VISIBLE else View.INVISIBLE
 
             itemView.setOnClickListener {
                 onClick(favorite.Id)
@@ -38,6 +43,7 @@ class FavoriteAdapter(var favorites: ArrayList<Favorite>, val onClick: (favorite
     }
 
     fun updateList(newList: List<Favorite>) {
+
         favorites.clear()
         favorites.addAll(newList)
         notifyDataSetChanged()

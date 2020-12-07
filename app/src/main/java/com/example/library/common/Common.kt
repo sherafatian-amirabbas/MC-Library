@@ -14,6 +14,7 @@ class Common {
     companion object
     {
         var BOOK_ID_KEY = "_BOOK_ID_EXTRA_"
+        var DETAIL_TYPE_KEY = "_IS_FAVORITE_MODE_"
 
         // to remove non-digit characters "/Date(xxxxxxxxxxxxxx)/"
         final var non_digit_regex = Regex("[^0-9]+")

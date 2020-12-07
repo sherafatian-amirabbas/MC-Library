@@ -4,12 +4,10 @@ import android.content.Context
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.viewModelScope
-import com.example.library.dataAccess.Repository
+import com.example.library.dataAccess.entities.Favorite
+import com.example.library.dataAccess.repository.Repository
 import com.example.library.service.LibraryProxy
 import com.example.library.service.entities.Book
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 
 
 class MainViewModelFactory(private val context: Context) :
@@ -20,10 +18,8 @@ class MainViewModelFactory(private val context: Context) :
     }
 }
 
-class MainViewModel(context: Context) : ViewModel() {
+class MainViewModel(context: Context) : BaseViewModel(context) {
 
-    private var _repo = Repository(context)
-    private var service = LibraryProxy(context)
     var books = MutableLiveData<List<Book>>()
 
     fun updateModel(searchText: String, onComplete: () -> Unit)
@@ -31,16 +27,32 @@ class MainViewModel(context: Context) : ViewModel() {
         if(searchText.isNullOrEmpty())
             service.getAllBooks {
 
-                books.value = it
-                onComplete()
+                repository.User.updateLastVisitDate {  }
 
-                _repo.updateLastVisitDate {  }
+                books.value = updateIsAddedAsFavoriteOnList(it)
+                onComplete()
             }
         else
             service.getBooksByKeywork(searchText, {
 
-                books.value = it
+                books.value = updateIsAddedAsFavoriteOnList(it)
                 onComplete()
             })
+    }
+
+
+    // ------------------------------ private members
+
+    private fun updateIsAddedAsFavoriteOnList(books: List<Book>): List<Book>
+    {
+        var favorites = repository.Favorite.getFavorites()
+        books.forEach {
+
+            var book = it
+            var favorite = favorites.find({ it.Id == book.Id })
+            book.isAddedAsFavorites = favorite != null
+        }
+
+        return books
     }
 }

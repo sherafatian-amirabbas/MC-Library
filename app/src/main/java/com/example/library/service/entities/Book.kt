@@ -1,5 +1,6 @@
 package com.example.library.service.entities
 
+import com.example.library.dataAccess.entities.Favorite
 import java.util.*
 
 data class Book(val Id: String,
@@ -10,4 +11,20 @@ data class Book(val Id: String,
                 val Author: String,
                 val Publisher: String,
                 val CreationDate: Date
-) {}
+) {
+
+    var isAddedAsFavorites: Boolean = false
+
+    fun toFavorite(): Favorite {
+
+        return Favorite(
+            Id = Id,
+            Title = Title,
+            Description = Description,
+            Abstract = Abstract,
+            ISBN = ISBN,
+            Author = Author,
+            Publisher = Publisher
+        )
+    }
+}

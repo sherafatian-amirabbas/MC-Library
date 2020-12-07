@@ -4,13 +4,8 @@ import android.content.Context
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.viewModelScope
-import com.example.library.dataAccess.Repository
-import com.example.library.dataAccess.entities.Favorite
-import com.example.library.service.LibraryProxy
 import com.example.library.service.entities.Book
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
+import java.util.*
 
 
 class DetailsViewModelFactory(private val context: Context) :
@@ -21,53 +16,52 @@ class DetailsViewModelFactory(private val context: Context) :
     }
 }
 
-class DetailsViewModel(contex: Context) : ViewModel() {
+class DetailsViewModel(contex: Context) : BaseViewModel(contex) {
 
-    private var service = LibraryProxy(contex)
-    private var repository = Repository(contex)
     var book = MutableLiveData<Book>()
-    var isFavorite = MutableLiveData<Boolean>()
+    var isAddedToFavorite = MutableLiveData<Boolean>()
+    var isExpired = MutableLiveData<Boolean>()
 
-    fun updateModel(bookId: String) {
 
-        service.getBookByID(bookId, {
-            book.value = it!!
-        })
-    }
+    fun updateModel(bookId: String, isFavoriteMode: Boolean) {
 
-    fun isFavorite(bookId: String?) {
-        viewModelScope.launch(Dispatchers.IO) {
-            val resultCount = repository.isFavorite(bookId)
-            isFavorite.postValue(resultCount > 0)
+        isAddedToFavorite.value = repository.Favorite.isAddedToFavorite(bookId)
+
+        if(isFavoriteMode) {
+
+            repository.Favorite.getUpdatedFavorite(bookId, {
+
+                var fav = it!!
+                book.value =
+                    Book(fav.Id, fav.Title, fav.Description, fav.Abstract, fav.ISBN, fav.Author, fav.Publisher, Date())
+
+                isExpired.value = fav.isExpired
+            })
+        }
+        else {
+
+            service.getBookByID(bookId, {
+
+                isExpired.value = false
+                book.value = it!!
+            })
         }
     }
 
     fun toggleFavorites() {
-        viewModelScope.launch(Dispatchers.IO) {
-            val favorite = mapBookToFavorite()
-            if (isFavorite.value == true) {
-                repository.removeFromFavorite(favorite)
-                isFavorite.postValue(false)
-            } else {
-                repository.addToFavorite(favorite)
-                isFavorite.postValue(true)
-            }
-        }
-    }
 
-    fun mapBookToFavorite(): Favorite? {
-        val book = book.value
-        if (book != null) {
-            return Favorite(
-                Id = book.Id,
-                Title = book.Title,
-                Description = book.Description,
-                Abstract = book.Abstract,
-                ISBN = book.ISBN,
-                Author = book.Author,
-                Publisher = book.Publisher
-            )
+        if(book.value == null) return
+
+        val favorite = book.value!!.toFavorite()
+        if (isAddedToFavorite.value == true) {
+
+            repository.Favorite.removeFromFavorite(favorite)
+            isAddedToFavorite.postValue(false)
+
+        } else {
+
+            repository.Favorite.addToFavorite(favorite)
+            isAddedToFavorite.postValue(true)
         }
-        return null
     }
 }

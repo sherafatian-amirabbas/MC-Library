@@ -2,10 +2,11 @@ package com.example.library.ui.viewModel
 
 import android.content.Context
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.example.library.dataAccess.Repository
 import com.example.library.dataAccess.entities.Favorite
+import com.example.library.service.entities.Book
 
 class FavoriteViewModelFactory(private val context: Context) :
     ViewModelProvider.Factory {
@@ -15,13 +16,23 @@ class FavoriteViewModelFactory(private val context: Context) :
     }
 }
 
-class FavoriteViewModel(context: Context) : ViewModel() {
-    private var repository = Repository(context)
+class FavoriteViewModel(context: Context) : BaseViewModel(context) {
 
-    fun getFavorites(keyword: String? = null): LiveData<List<Favorite>> {
+    var favorites = MutableLiveData<List<Favorite>>()
+
+    fun updateModel(keyword: String?, onComplete: () -> Unit) {
+
         if (keyword.isNullOrEmpty())
-            return repository.getFavorites()
+            return repository.Favorite.getUpdatedFavorites({
+
+                favorites.value = it
+                onComplete()
+            })
         else
-            return repository.getFavoritesBy("%$keyword%")
+            return repository.Favorite.getUpdatedFavoritesBy("%$keyword%", {
+
+                favorites.value = it
+                onComplete()
+            })
     }
 }

@@ -26,11 +26,17 @@ class MainActivity : BaseActivity() {
         service.getServerDate {
 
             var a = it;
-
+            var b = 1 + 1
         }
 
 
         initialize()
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        viewModel.updateModel("", {})
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -76,7 +82,7 @@ class MainActivity : BaseActivity() {
     }
 
     // ---------------------- private members
-    fun initialize() {
+    private fun initialize() {
         setSupportActionBar(toolbarMain)
 
         initializeAdapter()
@@ -84,27 +90,27 @@ class MainActivity : BaseActivity() {
         initializeViewModel()
     }
 
-    fun initializeAdapter() {
+    private fun initializeAdapter() {
         bookAdapter = BookAdapter(ArrayList(), {
 
             val intent = Intent(this, DetailsActivity::class.java)
             intent.putExtra(Common.BOOK_ID_KEY, it)
+            intent.putExtra(Common.DETAIL_TYPE_KEY, false)
             startActivity(intent)
         })
     }
 
-    fun initializeRecycler() {
+    private fun initializeRecycler() {
         rvMain.setHasFixedSize(true)
         rvMain.adapter = bookAdapter
     }
 
-    fun initializeViewModel() {
+    private fun initializeViewModel() {
         viewModel = ViewModelProvider(this, MainViewModelFactory(this.application))
             .get(MainViewModel::class.java)
+
         viewModel.books.observe(this) {
             bookAdapter.updateBooks(it)
         }
-
-        viewModel.updateModel("", {})
     }
 }
