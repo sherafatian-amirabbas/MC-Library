@@ -7,6 +7,7 @@ class Repository(var context: Context) {
 
     private var _repo = DataModel.getInstance(context).getDataAccessObject()
 
-    var User = RepositoryUser(context, _repo)
-    var Favorite = RepositoryFavorite(context, _repo)
+    val User = RepositoryUser(context, _repo)
+    val Favorite = RepositoryFavorite(context, _repo)
+    val Log = RepositoryLog(context, _repo)
 }

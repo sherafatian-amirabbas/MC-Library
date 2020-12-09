@@ -29,7 +29,7 @@ class RepositoryUser(context: Context, repo: IDataAccessObject):
 
         _libraryProxy.getServerDate {
 
-            setting.lastVisitDate = Common.convertDateToLastVisitDateStringFormat(it)
+            setting.lastVisitDate = Common.convertDateToStringFormat(it)
             upsertUserSetting(setting)
 
             if (onComplete != null)

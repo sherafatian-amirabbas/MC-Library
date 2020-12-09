@@ -10,4 +10,6 @@
     <string name="favorites">Favorites</string>
     <string name="DetailTitle">Detail</string>
     <string name="NotAvailable">NOT AVAILABLE</string>
+    <string name="NotificationTitle">New Books!!</string>
+    <string name="NotificationText">There are %1$d new books available since the last time you have visited the app...</string>
 </resources>

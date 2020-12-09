@@ -54,8 +54,8 @@ class FavoriteActivity : BaseActivity(), (String) -> Unit {
     override fun invoke(favoriteId: String) {
 
         val intent = Intent(this, DetailsActivity::class.java)
-        intent.putExtra(Common.BOOK_ID_KEY, favoriteId)
-        intent.putExtra(Common.DETAIL_TYPE_KEY, true)
+        intent.putExtra(Common.extraKeys.BOOK_ID_KEY, favoriteId)
+        intent.putExtra(Common.extraKeys.DETAIL_TYPE_KEY, true)
         startActivity(intent)
     }
 

@@ -1,8 +1,10 @@
 package com.example.library.dataAccess.entities
 
 import androidx.room.Entity
+import androidx.room.Ignore
 import androidx.room.PrimaryKey
-import java.text.SimpleDateFormat
+import com.example.library.common.Common
+import com.example.library.service.entities.Book
 import java.util.*
 
 

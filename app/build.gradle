@@ -49,6 +49,13 @@ dependencies {
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
 
+    // notification
+    //noinspection GradleCompatible
+    implementation "com.android.support:support-compat:28.0.0"
+
+    // workmanager
+    implementation "android.arch.work:work-runtime-ktx:2.4.0"
+
     // ION
     implementation 'com.koushikdutta.ion:ion:3.0.9'
 

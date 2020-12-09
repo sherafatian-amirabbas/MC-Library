@@ -10,7 +10,6 @@ import com.example.library.common.Common
 import com.example.library.ui.viewModel.DetailsViewModel
 import com.example.library.ui.viewModel.DetailsViewModelFactory
 import kotlinx.android.synthetic.main.activity_details.*
-import kotlinx.android.synthetic.main.item_favorite.view.*
 
 
 class DetailsActivity : BaseActivity() {
@@ -110,10 +109,10 @@ class DetailsActivity : BaseActivity() {
         val intent = intent
         if (intent != null) {
 
-            var bookId = intent.getStringExtra(Common.BOOK_ID_KEY)!!
+            var bookId = intent.getStringExtra(Common.extraKeys.BOOK_ID_KEY)!!
 
             // if the page opens from the list of favorites
-            isFavoriteMode = intent.getBooleanExtra(Common.DETAIL_TYPE_KEY, false)!!
+            isFavoriteMode = intent.getBooleanExtra(Common.extraKeys.DETAIL_TYPE_KEY, false)!!
 
             viewModel.updateModel(bookId, isFavoriteMode)
         }

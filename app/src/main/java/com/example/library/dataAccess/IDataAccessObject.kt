@@ -2,10 +2,13 @@ package com.example.library.dataAccess
 
 import androidx.room.*
 import com.example.library.dataAccess.entities.Favorite
+import com.example.library.dataAccess.entities.Log
 import com.example.library.dataAccess.entities.UserSetting
 
 @Dao
 interface IDataAccessObject {
+
+    // ------------------------------------------------- User Setting
 
     @Query("SELECT * FROM userSettings")
     fun getUserSetting(): Array<UserSetting>
@@ -33,4 +36,16 @@ interface IDataAccessObject {
 
     @Query("SELECT * FROM favorites WHERE id=:favoriteId")
     fun getFavorite(favoriteId: String): Favorite?
+
+
+    // ------------------------------------------------- Log
+
+    @Query("SELECT * FROM logs")
+    fun getLogs(): List<Log>
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun insertLog(vararg log: Log)
+
+    @Query("DELETE FROM logs")
+    fun deleteLogs()
 }

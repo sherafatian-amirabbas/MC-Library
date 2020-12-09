@@ -6,11 +6,13 @@ import android.view.Menu
 import androidx.appcompat.widget.SearchView
 import androidx.lifecycle.ViewModelProvider
 import com.example.library.common.Common
-import com.example.library.service.LibraryProxy
 import com.example.library.ui.BookAdapter
 import com.example.library.ui.viewModel.MainViewModel
 import com.example.library.ui.viewModel.MainViewModelFactory
+import com.example.library.workmanager.LibraryWorker
 import kotlinx.android.synthetic.main.activity_main.*
+import java.util.*
+import kotlin.collections.ArrayList
 
 class MainActivity : BaseActivity() {
 
@@ -21,14 +23,8 @@ class MainActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-
-        var service = LibraryProxy(applicationContext)
-        service.getServerDate {
-
-            var a = it;
-            var b = 1 + 1
-        }
-
+        _repo.Log.deleteLogs()
+        var a = _repo.Log.getLogs()
 
         initialize()
     }
@@ -83,6 +79,9 @@ class MainActivity : BaseActivity() {
 
     // ---------------------- private members
     private fun initialize() {
+
+        LibraryWorker.setup(this)
+
         setSupportActionBar(toolbarMain)
 
         initializeAdapter()
@@ -94,8 +93,8 @@ class MainActivity : BaseActivity() {
         bookAdapter = BookAdapter(ArrayList(), {
 
             val intent = Intent(this, DetailsActivity::class.java)
-            intent.putExtra(Common.BOOK_ID_KEY, it)
-            intent.putExtra(Common.DETAIL_TYPE_KEY, false)
+            intent.putExtra(Common.extraKeys.BOOK_ID_KEY, it)
+            intent.putExtra(Common.extraKeys.DETAIL_TYPE_KEY, false)
             startActivity(intent)
         })
     }

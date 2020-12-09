@@ -93,7 +93,7 @@ class LibraryProxy(contex: Context) {
     {
         httpRequest.makeAsString(ServiceURIs.getAppDate) {
 
-            var date = Common.convertTicksFormatDateIntoDate(it)
+            var date = Common.getDateFromStringFormat(it)
             onComplete(date)
         }
 
@@ -147,7 +147,7 @@ class LibraryProxy(contex: Context) {
     {
         companion object
         {
-            val baseUrl = "http://www.tu-library.somee.com"
+            val baseUrl = "http://web-library.somee.com"
             var getAllBooks = baseUrl + "/Book/GetAll"
             var getAllBooksByDateRange = baseUrl + "/Book/GetAllByDateRange"
             var getAllBooksByKeyword = baseUrl + "/Book/GetAllByKeyword"
