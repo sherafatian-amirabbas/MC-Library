@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.Menu
 import androidx.appcompat.widget.SearchView
 import androidx.lifecycle.ViewModelProvider
+import androidx.work.ExistingPeriodicWorkPolicy
 import com.example.library.common.Common
 import com.example.library.ui.BookAdapter
 import com.example.library.ui.viewModel.MainViewModel
@@ -22,9 +23,6 @@ class MainActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
-        _repo.Log.deleteLogs()
-        var a = _repo.Log.getLogs()
 
         initialize()
     }
@@ -54,17 +52,33 @@ class MainActivity : BaseActivity() {
         })
 
 
+        val homeMenuItem = menu.findItem(R.id.menu_home)
+        homeMenuItem.isVisible = false
+
+
         val refreshMenuItem = menu.findItem(R.id.menu_refresh)
         refreshMenuItem.setOnMenuItemClickListener {
+
             viewModel.updateModel("", {
                 searchItem.collapseActionView()
             })
+
             true
         }
 
+
         val favoritesMenuItem = menu.findItem(R.id.menu_favorite)
         favoritesMenuItem.setOnMenuItemClickListener {
+
             startFavoritesActivity()
+            true
+        }
+
+
+        val settingMenuItem = menu.findItem(R.id.menu_settings)
+        settingMenuItem.setOnMenuItemClickListener {
+
+            startSettingActivity()
             true
         }
 
@@ -77,10 +91,18 @@ class MainActivity : BaseActivity() {
         startActivity(intent)
     }
 
+    private fun startSettingActivity() {
+        val intent = Intent(this, SettingActivity::class.java)
+        startActivity(intent)
+    }
+
     // ---------------------- private members
     private fun initialize() {
 
-        LibraryWorker.setup(this)
+        _repo.User.updateLastVisitDate {
+
+            LibraryWorker.setup(applicationContext, ExistingPeriodicWorkPolicy.KEEP)
+        }
 
         setSupportActionBar(toolbarMain)
 

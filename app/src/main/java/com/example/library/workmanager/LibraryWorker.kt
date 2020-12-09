@@ -4,6 +4,7 @@ import android.content.Context
 import android.util.Log
 import androidx.lifecycle.LifecycleOwner
 import androidx.work.*
+import com.example.library.BaseActivity
 import com.example.library.common.Common
 import com.example.library.dataAccess.repository.Repository
 import com.example.library.service.LibraryProxy
@@ -23,15 +24,22 @@ class LibraryWorker(context: Context, workerParams: WorkerParameters)
 
         private val Key = "_NOTIFICATION_WORKER_KEY"
 
-        fun setup(owner: LifecycleOwner)
+        fun setup(context: Context, policy: ExistingPeriodicWorkPolicy)
         {
+            val repo = Repository(context)
+            var userSetting = repo.User.getUserSetting()
+            if(userSetting == null || !userSetting.isServiceEnabled)
+                return
+
+
             val constraints = Constraints.Builder()
                 .setRequiredNetworkType(NetworkType.CONNECTED)
                 .build()
 
 
             val workRequest =
-                PeriodicWorkRequestBuilder<LibraryWorker>(15, TimeUnit.MINUTES)
+                PeriodicWorkRequestBuilder<LibraryWorker>(userSetting!!.serviceIntervalInMinutes.toLong(),
+                        TimeUnit.MINUTES)
                     .setConstraints(constraints)
                     .build()
 
@@ -39,7 +47,7 @@ class LibraryWorker(context: Context, workerParams: WorkerParameters)
             WorkManager.getInstance()
                 .enqueueUniquePeriodicWork(
                     LibraryWorker.Key,
-                    ExistingPeriodicWorkPolicy.KEEP,
+                    policy,
                     workRequest
                 )
         }

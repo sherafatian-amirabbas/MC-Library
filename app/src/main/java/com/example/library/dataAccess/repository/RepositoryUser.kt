@@ -37,7 +37,10 @@ class RepositoryUser(context: Context, repo: IDataAccessObject):
         }
     }
 
-    fun updateServiceSetting(serviceIntervalInMinutes: Int, isServiceEnabled: Boolean) {
+    fun updateServiceSetting(serviceIntervalInMinutes: Int,
+         isServiceEnabled: Boolean,
+         onComplete: (UserSetting) -> Unit) {
+
         var userSetting = getUserSetting()
 
         if (userSetting == null) {
@@ -48,12 +51,16 @@ class RepositoryUser(context: Context, repo: IDataAccessObject):
                 it.isServiceEnabled = isServiceEnabled
 
                 upsertUserSetting(it)
+
+                onComplete(it)
             })
         } else {
             userSetting.serviceIntervalInMinutes = serviceIntervalInMinutes
             userSetting.isServiceEnabled = isServiceEnabled
 
             upsertUserSetting(userSetting)
+
+            onComplete(userSetting)
         }
     }
 

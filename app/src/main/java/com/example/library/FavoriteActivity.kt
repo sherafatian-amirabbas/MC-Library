@@ -63,6 +63,14 @@ class FavoriteActivity : BaseActivity(), (String) -> Unit {
 
         menuInflater.inflate(R.menu.menu_search, menu)
 
+        val homeMenuItem = menu?.findItem(R.id.menu_home)
+        homeMenuItem?.setOnMenuItemClickListener {
+
+            startMainActivity()
+            true
+        }
+
+
         val favoriteItem = menu?.findItem(R.id.menu_favorite)
         favoriteItem?.isVisible = false
 
@@ -70,6 +78,7 @@ class FavoriteActivity : BaseActivity(), (String) -> Unit {
         val searchItem = menu?.findItem(R.id.menu_search)
         val searchView = searchItem?.actionView as SearchView
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+
             override fun onQueryTextSubmit(query: String?): Boolean {
                 return false
             }
@@ -99,6 +108,27 @@ class FavoriteActivity : BaseActivity(), (String) -> Unit {
         }
 
 
+        val settingMenuItem = menu?.findItem(R.id.menu_settings)
+        settingMenuItem.setOnMenuItemClickListener {
+
+            startSettingActivity()
+            true
+        }
+
+
         return true
+    }
+
+    private fun startSettingActivity() {
+
+        val intent = Intent(this, SettingActivity::class.java)
+        startActivity(intent)
+    }
+
+    private fun startMainActivity() {
+
+        val intent = Intent(this, MainActivity::class.java)
+        startActivity(intent)
+        finish()
     }
 }

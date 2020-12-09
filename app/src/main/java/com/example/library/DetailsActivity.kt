@@ -29,11 +29,22 @@ class DetailsActivity : BaseActivity() {
 
         menuInflater.inflate(R.menu.menu_search, menu)
 
+
+        val homeMenuItem = menu?.findItem(R.id.menu_home)
+        homeMenuItem?.setOnMenuItemClickListener {
+
+            startMainActivity()
+            true
+        }
+
+
         val searchItem = menu?.findItem(R.id.menu_search)
         searchItem?.isVisible = false
 
+
         val refreshItem = menu?.findItem(R.id.menu_refresh)
         refreshItem?.isVisible = false
+
 
         val favoriteItem = menu?.findItem(R.id.menu_favorite)
         favoriteItem?.setOnMenuItemClickListener {
@@ -41,6 +52,15 @@ class DetailsActivity : BaseActivity() {
             startFavoritesActivity()
             true
         }
+
+
+        val settingMenuItem = menu?.findItem(R.id.menu_settings)
+        settingMenuItem?.setOnMenuItemClickListener {
+
+            startSettingActivity()
+            true
+        }
+
 
         return true
     }
@@ -121,6 +141,20 @@ class DetailsActivity : BaseActivity() {
     private fun startFavoritesActivity() {
 
         val intent = Intent(this, FavoriteActivity::class.java)
+        startActivity(intent)
+        finish()
+    }
+
+    private fun startSettingActivity() {
+
+        val intent = Intent(this, SettingActivity::class.java)
+        startActivity(intent)
+        finish()
+    }
+
+    private fun startMainActivity() {
+
+        val intent = Intent(this, MainActivity::class.java)
         startActivity(intent)
         finish()
     }

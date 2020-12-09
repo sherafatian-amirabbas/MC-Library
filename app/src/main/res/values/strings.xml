@@ -2,8 +2,9 @@
     <string name="app_name">Library</string>
     <string name="search">Search</string>
     <string name="keyword">Keyword...</string>
-    <string name="settings">Settings</string>
+    <string name="setting">Setting</string>
     <string name="refresh">Refresh</string>
+    <string name="home">Home</string>
     <string name="fill_search_box">Please fill search box</string>
     <string name="add_to_favorites">Add to Favorites</string>
     <string name="remove_from_favorites">Remove From Favorites</string>
@@ -11,5 +12,9 @@
     <string name="DetailTitle">Detail</string>
     <string name="NotAvailable">NOT AVAILABLE</string>
     <string name="NotificationTitle">New Books!!</string>
+    <string name="setting_switch_text">Service</string>
+    <string name="setting_interval_desc">15 mins - 1440 mins (24 h)</string>
+    v<string name="setting_switch_desc">Keep this enabled if you want to get notified of new books in the following interval in minutes</string>
     <string name="NotificationText">There are %1$d new books available since the last time you have visited the app...</string>
+    <string name="Submit">SUBMIT</string>
 </resources>
