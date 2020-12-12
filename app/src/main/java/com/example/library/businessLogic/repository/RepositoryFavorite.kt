@@ -1,4 +1,4 @@
-package com.example.library.dataAccess.repository
+package com.example.library.businessLogic.repository
 
 import android.content.Context
 import com.example.library.dataAccess.IDataAccessObject

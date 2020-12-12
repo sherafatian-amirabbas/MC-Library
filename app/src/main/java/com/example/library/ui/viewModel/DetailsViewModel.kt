@@ -4,7 +4,7 @@ import android.content.Context
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.example.library.service.entities.Book
+import com.example.library.common.service.entities.Book
 import java.util.*
 
 

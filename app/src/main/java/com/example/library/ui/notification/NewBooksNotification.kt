@@ -8,14 +8,12 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.BitmapFactory
 import android.os.Build
-import android.util.Log
 import androidx.core.app.NotificationCompat
 import com.example.library.MainActivity
 import com.example.library.R
 import com.example.library.common.Common
-import com.example.library.dataAccess.repository.Repository
-import com.example.library.service.LibraryProxy
-import java.util.*
+import com.example.library.businessLogic.Repository
+import com.example.library.common.service.LibraryProxy
 
 class NewBooksNotification(val context: Context, val Title: String, val Text: String) {
 

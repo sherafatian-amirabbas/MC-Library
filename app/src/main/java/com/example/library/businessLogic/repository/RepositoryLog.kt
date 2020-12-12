@@ -1,4 +1,4 @@
-package com.example.library.dataAccess.repository
+package com.example.library.businessLogic.repository
 
 import android.content.Context
 import com.example.library.common.Common
@@ -25,7 +25,7 @@ class RepositoryLog(context: Context, repo: IDataAccessObject):
 
     private val _libraryWorkerLog_key = "LibraryWorker"
 
-    fun logLibraryWorker(executionDate: Date, result: Boolean, description: String): LibraryWorkerLogData{
+    fun logLibraryWorker(executionDate: Date, result: Boolean, description: String): LibraryWorkerLogData {
 
         var logData = LibraryWorkerLogData(executionDate, result, description)
         var log = Log(0, _libraryWorkerLog_key, logData.toString())

@@ -4,10 +4,7 @@ import android.content.Context
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.example.library.dataAccess.entities.Favorite
-import com.example.library.dataAccess.repository.Repository
-import com.example.library.service.LibraryProxy
-import com.example.library.service.entities.Book
+import com.example.library.common.service.entities.Book
 
 
 class MainViewModelFactory(private val context: Context) :

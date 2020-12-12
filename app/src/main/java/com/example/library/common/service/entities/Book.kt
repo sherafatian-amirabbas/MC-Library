@@ -1,4 +1,4 @@
-package com.example.library.service.entities
+package com.example.library.common.service.entities
 
 import com.example.library.dataAccess.entities.Favorite
 import java.util.*

@@ -1,15 +1,12 @@
-package com.example.library.workmanager
+package com.example.library.ui.workManager
 
 import android.content.Context
 import android.util.Log
-import androidx.lifecycle.LifecycleOwner
 import androidx.work.*
-import com.example.library.BaseActivity
 import com.example.library.common.Common
-import com.example.library.dataAccess.repository.Repository
-import com.example.library.service.LibraryProxy
+import com.example.library.businessLogic.Repository
+import com.example.library.common.service.LibraryProxy
 import com.example.library.ui.notification.NewBooksNotification
-import java.util.*
 import java.util.concurrent.TimeUnit
 
 
@@ -46,7 +43,7 @@ class LibraryWorker(context: Context, workerParams: WorkerParameters)
 
             WorkManager.getInstance()
                 .enqueueUniquePeriodicWork(
-                    LibraryWorker.Key,
+                    Key,
                     policy,
                     workRequest
                 )
@@ -54,7 +51,7 @@ class LibraryWorker(context: Context, workerParams: WorkerParameters)
 
         fun stop()
         {
-            WorkManager.getInstance().cancelUniqueWork(LibraryWorker.Key)
+            WorkManager.getInstance().cancelUniqueWork(Key)
         }
     }
 

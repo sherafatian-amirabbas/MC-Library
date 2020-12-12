@@ -1,6 +1,7 @@
-package com.example.library.dataAccess.repository;
+package com.example.library.businessLogic.repository;
 
 import android.content.Context
+import com.example.library.businessLogic.repository.RepositoryBase
 import com.example.library.common.Common
 import com.example.library.dataAccess.IDataAccessObject
 import com.example.library.dataAccess.entities.UserSetting

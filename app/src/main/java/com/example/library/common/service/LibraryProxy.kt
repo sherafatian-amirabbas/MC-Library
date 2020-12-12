@@ -1,7 +1,7 @@
-package com.example.library.service
+package com.example.library.common.service
 
 import android.content.Context
-import com.example.library.service.entities.Book
+import com.example.library.common.service.entities.Book
 import com.example.library.common.Common
 import com.google.gson.JsonArray
 import com.google.gson.JsonObject

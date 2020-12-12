@@ -2,7 +2,7 @@ package com.example.library
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import com.example.library.dataAccess.repository.Repository
+import com.example.library.businessLogic.Repository
 
 open class BaseActivity: AppCompatActivity() {
 

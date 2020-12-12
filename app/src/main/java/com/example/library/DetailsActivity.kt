@@ -91,7 +91,7 @@ class DetailsActivity : BaseActivity() {
     private fun initializeViewModel() {
 
         viewModel = ViewModelProvider(this, DetailsViewModelFactory(this.application))
-            .get(DetailsViewModel::class.java)
+        .get(DetailsViewModel::class.java)
 
         viewModel.book.observe(this) {
 

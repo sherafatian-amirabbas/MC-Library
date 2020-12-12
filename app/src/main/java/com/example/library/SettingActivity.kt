@@ -1,21 +1,22 @@
 package com.example.library
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.text.InputFilter
 import android.view.Menu
-import android.view.View
 import android.widget.Toast
-import androidx.appcompat.widget.SearchView
+import androidx.lifecycle.ViewModelProvider
 import androidx.work.ExistingPeriodicWorkPolicy
-import com.example.library.workmanager.LibraryWorker
-import kotlinx.android.synthetic.main.activity_details.*
-import kotlinx.android.synthetic.main.activity_favorite.*
-import kotlinx.android.synthetic.main.activity_favorite.toolbarFavorite
+import com.example.library.ui.viewModel.DetailsViewModel
+import com.example.library.ui.viewModel.DetailsViewModelFactory
+import com.example.library.ui.viewModel.SettingViewModel
+import com.example.library.ui.viewModel.SettingViewModelFactory
+import com.example.library.ui.workManager.LibraryWorker
 import kotlinx.android.synthetic.main.activity_setting.*
 
 class SettingActivity : BaseActivity() {
+
+    private lateinit var viewModel: SettingViewModel
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -67,9 +68,12 @@ class SettingActivity : BaseActivity() {
         setSupportActionBar(toolbarSetting)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
+
         toolbarSetting.setNavigationOnClickListener { finish() }
 
-        updateView()
+
+        initializeViewModel()
+        viewModel.updateModel()
 
 
         button_submit.setOnClickListener {
@@ -98,6 +102,7 @@ class SettingActivity : BaseActivity() {
                 _repo.User.updateServiceSetting(interval, switchWorkmanager.isChecked){
 
                     Toast.makeText(this, "Settings Saved and Applied", Toast.LENGTH_SHORT).show()
+                    viewModel.updateModel()
 
                     if(!it.isServiceEnabled)
                         LibraryWorker.stop()
@@ -116,11 +121,16 @@ class SettingActivity : BaseActivity() {
         }
     }
 
-    private fun updateView() {
+    private fun initializeViewModel() {
 
-        var userSetting = _repo.User.getUserSetting()!!
-        switchWorkmanager.isChecked = userSetting.isServiceEnabled
-        editTextNumber.setText(userSetting.serviceIntervalInMinutes.toString())
+        viewModel = ViewModelProvider(this, SettingViewModelFactory(this.application))
+            .get(SettingViewModel::class.java)
+
+        viewModel.userSetting.observe(this){
+
+            switchWorkmanager.isChecked = it.isServiceEnabled
+            editTextNumber.setText(it.serviceIntervalInMinutes.toString())
+        }
     }
 
     private fun startFavoritesActivity() {

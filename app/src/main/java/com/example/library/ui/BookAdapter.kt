@@ -3,10 +3,9 @@ package com.example.library.ui
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import com.example.library.R
-import com.example.library.service.entities.Book
+import com.example.library.common.service.entities.Book
 import kotlinx.android.synthetic.main.item_book.view.*
 
 

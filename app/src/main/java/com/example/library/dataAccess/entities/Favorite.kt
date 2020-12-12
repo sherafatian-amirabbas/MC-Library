@@ -4,7 +4,7 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.Ignore
 import androidx.room.PrimaryKey
-import com.example.library.service.entities.Book
+import com.example.library.common.service.entities.Book
 
 @Entity(tableName = "favorites")
 data class Favorite(

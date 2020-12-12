@@ -1,12 +1,10 @@
 package com.example.library.ui.viewModel
 
 import android.content.Context
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.example.library.dataAccess.entities.Favorite
-import com.example.library.service.entities.Book
 
 class FavoriteViewModelFactory(private val context: Context) :
     ViewModelProvider.Factory {
